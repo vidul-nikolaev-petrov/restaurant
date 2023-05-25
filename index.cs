@@ -108,7 +108,7 @@ public class Salad : Product
     // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
-        get { return "грама"; }
+        get { return "Грама"; }
     }
 
 }
@@ -127,7 +127,7 @@ public class Soup : Product
     // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
-        get { return "грама"; }
+        get { return "Грама"; }
     }
 }
 
@@ -146,7 +146,7 @@ public class MainCourse : Product
     // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
-        get { return "грама"; }
+        get { return "Грама"; }
     }
 }
 
@@ -164,7 +164,7 @@ public class Dessert : Product
     // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
-        get { return "грама"; }
+        get { return "Грама"; }
     }
 }
 
@@ -182,7 +182,7 @@ public class Drink : Product
     // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
-        get { return "милилитра"; }
+        get { return "Милилитра"; }
     }
 }
 
@@ -248,6 +248,15 @@ partial class Program
             var input = Console.ReadLine();
 
             if (input == "изход") {
+                // check if orders are made
+                if (orders.Count > 0)
+                {
+                    showSales(orders);
+                }
+                else
+                {
+                    Console.WriteLine("\nНяма направени поръчки.");
+                }
                 break;
             }
 
@@ -340,22 +349,7 @@ partial class Program
             // the sum of all orders' products and the sum of their prices grouped by category ascending
             if (input == "продажби")
             {
-                var busyTables = orders.Select(x => x.TableNumber).Distinct().Count();
-                var totalOrders = orders.Count();
-                var totalIncome = orders.Sum(x => x.TotalPrice);
-                var totalProducts = orders.SelectMany(x => x.Products).Count();
-                var totalProductsByCategory = orders.SelectMany(x => x.Products)
-                    .GroupBy(x => x.Category)
-                    .OrderBy(x => x.Key)
-                    .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
-
-                Console.WriteLine($"Общо заети маси през деня: {busyTables}");
-                Console.WriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}");
-                Console.WriteLine("Продукти по категории:");
-                foreach (var product in totalProductsByCategory)
-                {
-                    Console.WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}");
-                }
+                showSales(orders);
                 continue;
             }
             
@@ -397,17 +391,37 @@ partial class Program
                 Console.WriteLine("Невалидна команда!");
             }
         }
+    }
 
-        static void SlowWriteLine(string text, int delayPerCharacter)
+    public static void showSales(List<Order> orders) 
+    {
+        var busyTables = orders.Select(x => x.TableNumber).Distinct().Count();
+        var totalOrders = orders.Count();
+        var totalIncome = orders.Sum(x => x.TotalPrice);
+        var totalProducts = orders.SelectMany(x => x.Products).Count();
+        var totalProductsByCategory = orders.SelectMany(x => x.Products)
+            .GroupBy(x => x.Category)
+            .OrderBy(x => x.Key)
+            .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
+
+        Console.WriteLine($"Общо заети маси през деня: {busyTables}");
+        Console.WriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}");
+        Console.WriteLine("Продукти по категории:");
+        foreach (var product in totalProductsByCategory)
         {
-            foreach (char c in text)
-            {
-                Console.Write(c);
-                Thread.Sleep(delayPerCharacter);
-            }
-            
-            Console.WriteLine();
+            Console.WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}");
         }
+    }
+
+    static void SlowWriteLine(string text, int delayPerCharacter)
+    {
+        foreach (char c in text)
+        {
+            Console.Write(c);
+            Thread.Sleep(delayPerCharacter);
+        }
+        
+        Console.WriteLine();
     }
 }
 
