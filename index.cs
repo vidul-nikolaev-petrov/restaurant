@@ -363,11 +363,11 @@ partial class Program
                     .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
 
                 Console.WriteLine($"Общо заети маси през деня: {busyTables}");
-                Console.WriteLine($"Общо продажби: {totalOrders} - {totalIncome}");
+                Console.WriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}");
                 Console.WriteLine("Продукти по категории:");
                 foreach (var product in totalProductsByCategory)
                 {
-                    Console.WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {product.Price}");
+                    Console.WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}");
                 }
                 continue;
             }
@@ -399,10 +399,59 @@ partial class Program
                 continue;
             }
 
+            // easteregg
+            if (input == ":p" || input == ":P")
+            {
+                SlowWriteLine("\nI like С#\n", 100);
+                continue;
+            }
+
             if (!string.IsNullOrEmpty(input)) {
                 Console.WriteLine("Невалидна команда!");
             }
         }
+
+        static void SlowWriteLine(string text, int delayPerCharacter)
+        {
+            foreach (char c in text)
+            {
+                Console.Write(c);
+                Thread.Sleep(delayPerCharacter);
+            }
+            
+            Console.WriteLine();
+        }
     }
 }
 
+/* 
+
+Някои примерни команди:
+
+салата, Шопска салата, 350, 2.50
+салата, Овчарска салата, 400, 3.20
+супа, Таратор, 300, 1.50
+супа, Пилешка супа, 350, 3.00
+основно, Винен кебап, 450, 5.00
+основно, Мусака, 400, 4.60
+десерт, Палачинка, 150, 2.20
+десерт, Бисквитена торта, 200, 3.00
+напитка, Кафе, 70, 1.00
+напитка, Чай, 200, 1.00
+
+11, Шопска салата, Пилешка супа, Винен кебап, Палачинка, Кафе
+22, Овчарска салата, Таратор, Мусака, Бисквитена торта, Чай
+4, Шопска салата, Таратор, Винен кебап, Палачинка, Кафе
+5, Овчарска салата, Пилешка супа, Мусака, Бисквитена торта, Чай
+
+продажби
+
+инфо Шопска салата
+инфо Таратор
+инфо Винен кебап
+
+:P
+
+изход
+
+*/
