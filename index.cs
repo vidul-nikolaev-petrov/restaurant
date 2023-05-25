@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 
 public enum Category
@@ -241,7 +242,7 @@ partial class Program
                 continue;
             }
 
-            var inputList = input.Split(", ");
+            var inputList = Regex.Split(input, @",\s*");
 
             // if input starts with category
             if (Enum.IsDefined(typeof(Category), inputList[0]) &&
