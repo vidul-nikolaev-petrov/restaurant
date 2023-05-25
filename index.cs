@@ -76,6 +76,8 @@ public abstract class Product
     }
     // add method "GetCalories" that returns the calories of the product
     public abstract double GetCalories();
+    // add method "QuantytyType" that returns the quantity type of the product
+    public abstract string QuantityType { get; }
 }
 
 // create class Salad that inherits class Product
@@ -88,6 +90,11 @@ public class Salad : Product
     public override double GetCalories()
     {
         return 0;
+    }
+    // override property "QuantityType" that returns the quantity type of the product
+    public override string QuantityType
+    {
+        get { return "грама"; }
     }
 
 }
@@ -103,6 +110,11 @@ public class Soup : Product
     {
         return 0;
     }
+    // override property "QuantityType" that returns the quantity type of the product
+    public override string QuantityType
+    {
+        get { return "грама"; }
+    }
 }
 
 // create class MainCourse that inherits class Product
@@ -117,6 +129,11 @@ public class MainCourse : Product
         // return the quantity of the product multiplied by 1
         return Quantity * 1;
     }
+    // override property "QuantityType" that returns the quantity type of the product
+    public override string QuantityType
+    {
+        get { return "грама"; }
+    }
 }
 
 // create class Dessert that inherits class Product
@@ -130,6 +147,11 @@ public class Dessert : Product
     {
         return Quantity * 3;
     }
+    // override property "QuantityType" that returns the quantity type of the product
+    public override string QuantityType
+    {
+        get { return "грама"; }
+    }
 }
 
 // create class Drink that inherits class Product
@@ -142,6 +164,11 @@ public class Drink : Product
     public override double GetCalories()
     {
         return Quantity * 1.5;
+    }
+    // override property "QuantityType" that returns the quantity type of the product
+    public override string QuantityType
+    {
+        get { return "милилитра"; }
     }
 }
 
@@ -198,11 +225,11 @@ partial class Program
 {
     static void Main()
     {
-        // create an empty list of products
         List<Product> products = new List<Product>();
         List<Order> orders = new List<Order>();
-        
-        // read user input while it is not "изход"
+
+        Console.WriteLine("\nЗдравейте! Моля въведете продукти в менюто:\n");
+
         while (true) {
             var input = Console.ReadLine();
 
@@ -329,7 +356,6 @@ partial class Program
 
                 Console.WriteLine($"Общо заети маси през деня: {busyTables}");
                 Console.WriteLine($"Общ продажби: {totalOrders} - {totalIncome}");
-                // Console.WriteLine($"Общ брой продукти: {totalProducts}");
                 Console.WriteLine("Продукти по категории:");
                 foreach (var product in totalProductsByCategory)
                 {
@@ -359,13 +385,12 @@ partial class Program
                     continue;
                 }
 
-                Console.WriteLine($"Информация на продукт: {product.Name}");
-                Console.WriteLine($"Количество: {product.Quantity}");
+                Console.WriteLine($"Информация за продукт: {product.Name}");
+                Console.WriteLine($"{product.QuantityType}: {product.Quantity}");
                 Console.WriteLine($"Калории: {product.GetCalories()}");
                 continue;
             }
 
-            // if input is something else and not empty, print "Невалидна команда!"
             if (!string.IsNullOrEmpty(input)) {
                 Console.WriteLine("Невалидна команда!");
             }
