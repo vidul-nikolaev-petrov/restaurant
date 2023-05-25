@@ -4,13 +4,17 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 
-public enum Category
+public class Menu
 {
-    салата,
-    супа,
-    основно,
-    десерт,
-    напитка
+    public static readonly Dictionary<string, Func<Tuple<string, int, double>, Product>> Category =
+        new Dictionary<string, Func<Tuple<string, int, double>, Product>>
+    {
+        { "салата", args => new Salad(args.Item1, args.Item2, args.Item3) },
+        { "супа", args => new Soup(args.Item1, args.Item2, args.Item3) },
+        { "основно", args => new MainCourse(args.Item1, args.Item2, args.Item3) },
+        { "десерт", args => new Dessert(args.Item1, args.Item2, args.Item3) },
+        { "напитка", args => new Drink(args.Item1, args.Item2, args.Item3) }
+    };
 }
 
 // define abstract class Product with properties "Category", "Name", "Quantity", "Price",
@@ -245,8 +249,7 @@ partial class Program
             var inputList = Regex.Split(input, @",\s*");
 
             // if input starts with category
-            if (Enum.IsDefined(typeof(Category), inputList[0]) &&
-                Enum.TryParse<Category>(inputList[0], out Category category))
+            if (Menu.Category.ContainsKey(inputList[0]))
             {
                 try {
                     if (inputList.Length != 4)
@@ -254,30 +257,17 @@ partial class Program
                         Console.WriteLine("Невалиден продукт!");
                         continue;
                     }
-                    else if (category == Category.салата)
+                    if (products.Any(p => p.Name == inputList[1]))
                     {
-                        products.Add(new Salad(inputList[1], int.Parse(inputList[2]),
-                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
+                        Console.WriteLine($"Продуктът '{inputList[1]}' вече съществува!");
+                        continue;
                     }
-                    else if (category == Category.супа)
+                    else
                     {
-                        products.Add(new Soup(inputList[1], int.Parse(inputList[2]),
-                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
-                    }
-                    else if (category == Category.основно)
-                    {
-                        products.Add(new MainCourse(inputList[1], int.Parse(inputList[2]),
-                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
-                    }
-                    else if (category == Category.десерт)
-                    {
-                        products.Add(new Dessert(inputList[1], int.Parse(inputList[2]), 
-                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
-                    }
-                    else if (category == Category.напитка)
-                    {
-                        products.Add(new Drink(inputList[1], int.Parse(inputList[2]), 
-                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
+                        Tuple<string, int, double>  newProduct = new Tuple<string, int, double>
+                            (inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3], CultureInfo.InvariantCulture));
+
+                        products.Add(Menu.Category[inputList[0]](newProduct));
                     }
                     Console.WriteLine($"Продуктът '{inputList[1]}' беше добавен успешно в категорията '{inputList[0]}'!");
                     continue;
