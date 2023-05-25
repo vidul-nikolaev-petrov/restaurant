@@ -325,16 +325,15 @@ partial class Program
                 var totalProductsByCategory = orders.SelectMany(x => x.Products)
                     .GroupBy(x => x.Category)
                     .OrderBy(x => x.Key)
-                    .Select(x => new { Category = x.Key, Count = x.Count() });
+                    .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
 
-                Console.WriteLine($"Заети маси: {busyTables}");
-                Console.WriteLine($"Общ брой поръчки: {totalOrders}");
-                Console.WriteLine($"Общо приходи: {totalIncome}");
-                Console.WriteLine($"Общ брой продукти: {totalProducts}");
+                Console.WriteLine($"Общо заети маси през деня: {busyTables}");
+                Console.WriteLine($"Общ продажби: {totalOrders} - {totalIncome}");
+                // Console.WriteLine($"Общ брой продукти: {totalProducts}");
                 Console.WriteLine("Продукти по категории:");
                 foreach (var product in totalProductsByCategory)
                 {
-                    Console.WriteLine($"--{product.Category}: {product.Count}");
+                    Console.WriteLine($"  -   {product.Category}: {product.Count} - {product.Price}");
                 }
                 continue;
             }
