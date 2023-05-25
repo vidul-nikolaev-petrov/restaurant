@@ -149,7 +149,9 @@ public class Drink : Product
 // setters and getters, and constructor with parameters
 public class Order
 {
+    private int tableNumber;
     public int TableNumber {
+        get { return tableNumber; }
         set
         {
             if (value < 1)
@@ -160,6 +162,7 @@ public class Order
             {
                 throw new ArgumentException("Table number cannot be more than 30");
             }
+            tableNumber = value;
         }
     }
     public ImmutableList<Product> Products { get; set; }
@@ -311,6 +314,32 @@ partial class Program
                 }
             }
 
+            // if input starts with "продажби" show sum of busy tables, sum of all orders and total income, 
+            // the sum of all orders' products and the sum of their prices grouped by category ascending
+            if (input == "продажби")
+            {
+                var busyTables = orders.Select(x => x.TableNumber).Distinct().Count();
+                var totalOrders = orders.Count();
+                var totalIncome = orders.Sum(x => x.TotalPrice);
+                var totalProducts = orders.SelectMany(x => x.Products).Count();
+                var totalProductsByCategory = orders.SelectMany(x => x.Products)
+                    .GroupBy(x => x.Category)
+                    .OrderBy(x => x.Key)
+                    .Select(x => new { Category = x.Key, Count = x.Count() });
+
+                Console.WriteLine($"Заети маси: {busyTables}");
+                Console.WriteLine($"Общ брой поръчки: {totalOrders}");
+                Console.WriteLine($"Общо приходи: {totalIncome}");
+                Console.WriteLine($"Общ брой продукти: {totalProducts}");
+                Console.WriteLine("Продукти по категории:");
+                foreach (var product in totalProductsByCategory)
+                {
+                    Console.WriteLine($"--{product.Category}: {product.Count}");
+                }
+                continue;
+            }
+            
+
             // if input starts with "info" show the product which follows it
             if (input.StartsWith("инфо"))
             {
@@ -336,8 +365,6 @@ partial class Program
                 Console.WriteLine($"Калории: {product.GetCalories()}");
                 continue;
             }
-
-            
 
             // if input is something else and not empty, print "Невалидна команда!"
             if (!string.IsNullOrEmpty(input)) {
