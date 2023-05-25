@@ -275,10 +275,15 @@ partial class Program
                         List<Product> productsInOrder = new List<Product>();
                         foreach (var product in products)
                         {
-                            if (product.Name == inputList[1])
+                            for (int i = 1; i < inputList.Length; i++)
                             {
-                                productsInOrder.Add(product);
+                                if (product.Name == inputList[i])
+                                {
+                                    productsInOrder.Add(product);
+                                }
                             }
+
+                            
                         }
                         if (productsInOrder.Count == 0)
                         {
