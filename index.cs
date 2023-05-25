@@ -321,20 +321,10 @@ partial class Program
                         }
                         else
                         {
-                            string productsNames = "";                            
                             Order order = new Order(tableNumber, productsInOrder.ToImmutableList());
                             order.CalculateTotalPrice();
                             order.CalculateTotalCalories();
                             orders.Add(order);
-                            for (int i = 1; i < inputList.Length; i++)
-                            {
-                                productsNames += inputList[i];
-                                if (i != inputList.Length - 1)
-                                {
-                                    productsNames += ", ";
-                                }
-                            }
-                            Console.WriteLine($"Продукти: {productsNames}");
 
                             continue;
                         }
