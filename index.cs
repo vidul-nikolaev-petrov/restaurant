@@ -313,8 +313,6 @@ partial class Program
                                     productsInOrder.Add(product);
                                 }
                             }
-
-                            
                         }
                         if (productsInOrder.Count == 0)
                         {
@@ -323,14 +321,24 @@ partial class Program
                         }
                         else
                         {
+                            string productsNames = "";                            
                             Order order = new Order(tableNumber, productsInOrder.ToImmutableList());
                             order.CalculateTotalPrice();
                             order.CalculateTotalCalories();
                             orders.Add(order);
                             Console.WriteLine($"Номер на маса: {tableNumber}");
-                            Console.WriteLine($"Име на продукт: {inputList[1]}");
                             Console.WriteLine($"Цена: {order.TotalPrice}");
                             Console.WriteLine($"Калории: {order.TotalCalories}");
+                            for (int i = 1; i < inputList.Length; i++)
+                            {
+                                productsNames += inputList[i];
+                                if (i != inputList.Length - 1)
+                                {
+                                    productsNames += ", ";
+                                }
+                            }
+                            Console.WriteLine($"Продукти: {productsNames}");
+
                             continue;
                         }
                     }
@@ -355,7 +363,7 @@ partial class Program
                     .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
 
                 Console.WriteLine($"Общо заети маси през деня: {busyTables}");
-                Console.WriteLine($"Общ продажби: {totalOrders} - {totalIncome}");
+                Console.WriteLine($"Общо продажби: {totalOrders} - {totalIncome}");
                 Console.WriteLine("Продукти по категории:");
                 foreach (var product in totalProductsByCategory)
                 {
@@ -372,12 +380,12 @@ partial class Program
                     .Where(x => !string.IsNullOrEmpty(x))
                     .ToArray();
                 
-                if (inputInfo.Length != 2) {
+                if (inputInfo.Length < 2) {
                     Console.WriteLine("Невалидна инфо команда!");
                     continue;
                 }
 
-                var productName = inputInfo[1];
+                var productName = string.Join(" ", inputInfo.Skip(1));
                 var product = products.FirstOrDefault(x => x.Name == productName);
 
                 if (product == null) {
