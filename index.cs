@@ -326,9 +326,6 @@ partial class Program
                             order.CalculateTotalPrice();
                             order.CalculateTotalCalories();
                             orders.Add(order);
-                            Console.WriteLine($"Номер на маса: {tableNumber}");
-                            Console.WriteLine($"Цена: {order.TotalPrice}");
-                            Console.WriteLine($"Калории: {order.TotalCalories}");
                             for (int i = 1; i < inputList.Length; i++)
                             {
                                 productsNames += inputList[i];
@@ -449,6 +446,7 @@ partial class Program
 инфо Шопска салата
 инфо Таратор
 инфо Винен кебап
+инфо Палачинка
 
 :P
 
