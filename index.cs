@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Globalization;
 
 
 public enum Category
@@ -212,33 +213,89 @@ partial class Program
             var inputList = input.Split(", ");
 
             // if input starts with category
-            if (Enum.TryParse<Category>(inputList[0], out Category category))
+            if (Enum.IsDefined(typeof(Category), inputList[0]) &&
+                Enum.TryParse<Category>(inputList[0], out Category category))
             {
                 try {
                     if (inputList.Length != 4)
                     {
-                        Console.WriteLine("Невалиден продукт");
+                        Console.WriteLine("Невалиден продукт!");
                         continue;
                     }
                     else if (category == Category.салата)
                     {
-                        products.Add(new Salad(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                        products.Add(new Salad(inputList[1], int.Parse(inputList[2]),
+                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
                     }
                     else if (category == Category.супа)
                     {
-                        products.Add(new Soup(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                        products.Add(new Soup(inputList[1], int.Parse(inputList[2]),
+                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
                     }
                     else if (category == Category.основно)
                     {
-                        products.Add(new MainCourse(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                        products.Add(new MainCourse(inputList[1], int.Parse(inputList[2]),
+                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
                     }
                     else if (category == Category.десерт)
                     {
-                        products.Add(new Dessert(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                        products.Add(new Dessert(inputList[1], int.Parse(inputList[2]), 
+                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
                     }
                     else if (category == Category.напитка)
                     {
-                        products.Add(new Drink(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                        products.Add(new Drink(inputList[1], int.Parse(inputList[2]), 
+                                        double.Parse(inputList[3], CultureInfo.InvariantCulture)));
+                    }
+                    Console.WriteLine($"Продуктът '{inputList[1]}' беше добавен успешно в категорията '{inputList[0]}'!");
+                    continue;
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine("ArgumentException occurred: " + ex.Message);
+                }
+            }
+
+            // input first element is digit in range 1-30
+            if (int.TryParse(inputList[0], out int tableNumber))
+            {
+                try {
+                    if (tableNumber < 1 || tableNumber > 30)
+                    {
+                        Console.WriteLine("Невалиден номер на маса");
+                        continue;
+                    }
+                    else if (inputList.Length < 2)
+                    {
+                        Console.WriteLine("Невалидна команда!");
+                        continue;
+                    }
+                    else
+                    {
+                        List<Product> productsInOrder = new List<Product>();
+                        foreach (var product in products)
+                        {
+                            if (product.Name == inputList[1])
+                            {
+                                productsInOrder.Add(product);
+                            }
+                        }
+                        if (productsInOrder.Count == 0)
+                        {
+                            Console.WriteLine($"Няма продукт с име '{inputList[1]}'!");
+                            continue;
+                        }
+                        else
+                        {
+                            Order order = new Order(tableNumber, productsInOrder.ToImmutableList());
+                            order.CalculateTotalPrice();
+                            order.CalculateTotalCalories();
+                            Console.WriteLine($"Номер на маса: {tableNumber}");
+                            Console.WriteLine($"Име на продукт: {inputList[1]}");
+                            Console.WriteLine($"Цена: {order.TotalPrice}");
+                            Console.WriteLine($"Калории: {order.TotalCalories}");
+                            continue;
+                        }
                     }
                 }
                 catch (ArgumentException ex)
@@ -246,6 +303,7 @@ partial class Program
                     Console.WriteLine("ArgumentException occurred: " + ex.Message);
                 }
             }
+
             
             if (input == "продажби") {
                 continue;
