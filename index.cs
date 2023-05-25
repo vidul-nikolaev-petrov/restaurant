@@ -27,6 +27,10 @@ public abstract class Product
             {
                 throw new ArgumentException("Невалидно име на продукт!");
             }
+            if (value.All(char.IsDigit))
+            {
+                throw new ArgumentException("Името не може да е само цифри!");
+            }
             name = value;
         }
     }
