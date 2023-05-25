@@ -5,7 +5,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>Krisi_c_sharp</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 </Project>

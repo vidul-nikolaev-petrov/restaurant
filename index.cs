@@ -11,27 +11,36 @@ public enum Category
     напитка
 }
 
-
 // define abstract class Product with properties "Category", "Name", "Quantity", "Price",
 // setters and getters, and constructor with parameters
 public abstract class Product
 {
     private int quantity;
     private double price;
-
+    private string name;
     public string Category { get; set; }
-    public string Name { get; set; }
+    public string Name {
+        get { return name; }    
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("Невалидно име на продукт!");
+            }
+            name = value;
+        }
+    }
     public int Quantity { 
         get { return quantity; }
         set
         {
             if (value < 0)
             {
-                throw new ArgumentException("Quantity cannot be negative");
+                throw new ArgumentException("Количеството не може да е отрицателно число!");
             }
             if (value > 1000)
             {
-                throw new ArgumentException("Quantity cannot be more than 1000");
+                throw new ArgumentException("Количеството не може да е повече от 1000 единици!");
             }
             quantity = value;
         }
@@ -43,11 +52,11 @@ public abstract class Product
         {
             if (value < 0)
             {
-                throw new ArgumentException("Price cannot be negative");
+                throw new ArgumentException("Цената не може да е отрицателно число!");
             }
             if (value > 100)
             {
-                throw new ArgumentException("Price cannot be more than 100");
+                throw new ArgumentException("Цената не може да е повече от 100 единици!");
             }
             price = value;
         }
@@ -201,30 +210,36 @@ partial class Program
             // if input starts with category
             if (Enum.TryParse<Category>(inputList[0], out Category category))
             {
-                if (inputList.Length != 4)
-                {
-                    Console.WriteLine("Невалиден продукт");
-                    continue;
+                try {
+                    if (inputList.Length != 4)
+                    {
+                        Console.WriteLine("Невалиден продукт");
+                        continue;
+                    }
+                    else if (category == Category.салата)
+                    {
+                        products.Add(new Salad(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                    }
+                    else if (category == Category.супа)
+                    {
+                        products.Add(new Soup(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                    }
+                    else if (category == Category.основно)
+                    {
+                        products.Add(new MainCourse(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                    }
+                    else if (category == Category.десерт)
+                    {
+                        products.Add(new Dessert(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                    }
+                    else if (category == Category.напитка)
+                    {
+                        products.Add(new Drink(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                    }
                 }
-                else if (category == Category.салата)
+                catch (ArgumentException ex)
                 {
-                    products.Add(new Salad(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
-                }
-                else if (category == Category.супа)
-                {
-                    products.Add(new Soup(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
-                }
-                else if (category == Category.основно)
-                {
-                    products.Add(new MainCourse(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
-                }
-                else if (category == Category.десерт)
-                {
-                    products.Add(new Dessert(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
-                }
-                else if (category == Category.напитка)
-                {
-                    products.Add(new Drink(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                    Console.WriteLine("ArgumentException occurred: " + ex.Message);
                 }
             }
             
@@ -232,28 +247,12 @@ partial class Program
                 continue;
             }
 
-
             if (inputList.Length < 2)
             {
-                Console.WriteLine("Invalid input!");
+                Console.WriteLine("Невалидна команда!");
                 continue;
             }
-            
-
-
-            // split the input by comma and eventual space after the comma
-            
-            // check if the input is valid
-            // if (inputList.Length < 2)
-            // {
-            //     Console.WriteLine("Invalid input!");
-            //     continue;
-            // }
-
         }
-        
-
-
 
         // foreach (var category in Enum.GetValues(typeof(Category)))
         // {
