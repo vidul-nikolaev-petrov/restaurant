@@ -339,8 +339,10 @@ partial class Program
 
             
 
-            // if input is something else, print "Невалидна команда!"
-            Console.WriteLine("Невалидна команда!...");
+            // if input is something else and not empty, print "Невалидна команда!"
+            if (!string.IsNullOrEmpty(input)) {
+                Console.WriteLine("Невалидна команда!");
+            }
         }
     }
 }
