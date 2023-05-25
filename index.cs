@@ -197,6 +197,7 @@ partial class Program
     {
         // create an empty list of products
         List<Product> products = new List<Product>();
+        List<Order> orders = new List<Order>();
         
         // read user input while it is not "изход"
         while (true) {
@@ -295,6 +296,7 @@ partial class Program
                             Order order = new Order(tableNumber, productsInOrder.ToImmutableList());
                             order.CalculateTotalPrice();
                             order.CalculateTotalCalories();
+                            orders.Add(order);
                             Console.WriteLine($"Номер на маса: {tableNumber}");
                             Console.WriteLine($"Име на продукт: {inputList[1]}");
                             Console.WriteLine($"Цена: {order.TotalPrice}");
@@ -309,23 +311,37 @@ partial class Program
                 }
             }
 
-            
-            if (input == "продажби") {
-                continue;
-            }
-
-            if (inputList.Length < 2)
+            // if input starts with "info" show the product which follows it
+            if (input.StartsWith("инфо"))
             {
-                Console.WriteLine("Невалидна команда!");
+                var inputInfo = input.Split(" ")
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .ToArray();
+                
+                if (inputInfo.Length != 2) {
+                    Console.WriteLine("Невалидна инфо команда!");
+                    continue;
+                }
+
+                var productName = inputInfo[1];
+                var product = products.FirstOrDefault(x => x.Name == productName);
+
+                if (product == null) {
+                    Console.WriteLine($"Няма продукт с име '{productName}'!");
+                    continue;
+                }
+
+                Console.WriteLine($"Информация на продукт: {product.Name}");
+                Console.WriteLine($"Количество: {product.Quantity}");
+                Console.WriteLine($"Калории: {product.GetCalories()}");
                 continue;
             }
-        }
 
-        // foreach (var category in Enum.GetValues(typeof(Category)))
-        // {
-        //     Console.WriteLine(category);
-        // }        
-        // Console.WriteLine(Enum.TryParse<Category>("салата", out Category result));
+            
+
+            // if input is something else, print "Невалидна команда!"
+            Console.WriteLine("Невалидна команда!...");
+        }
     }
 }
 
