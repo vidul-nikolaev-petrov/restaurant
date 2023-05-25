@@ -15,6 +15,15 @@ public class Menu
         { "десерт", args => new Dessert(args.Item1, args.Item2, args.Item3) },
         { "напитка", args => new Drink(args.Item1, args.Item2, args.Item3) }
     };
+
+    public static readonly Dictionary<string, string> CatAnnotation = new Dictionary<string, string>
+    {
+        { "салата", "Салата" },
+        { "супа", "Супа" },
+        { "основно", "Основно ястие" },
+        { "десерт", "Десерт" },
+        { "напитка", "Напитка" }
+    };
 }
 
 // define abstract class Product with properties "Category", "Name", "Quantity", "Price",
@@ -358,7 +367,7 @@ partial class Program
                 Console.WriteLine("Продукти по категории:");
                 foreach (var product in totalProductsByCategory)
                 {
-                    Console.WriteLine($"  -   {product.Category}: {product.Count} - {product.Price}");
+                    Console.WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {product.Price}");
                 }
                 continue;
             }
