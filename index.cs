@@ -1,0 +1,265 @@
+using System;
+using System.Collections.Immutable;
+
+
+public enum Category
+{
+    салата,
+    супа,
+    основно,
+    десерт,
+    напитка
+}
+
+
+// define abstract class Product with properties "Category", "Name", "Quantity", "Price",
+// setters and getters, and constructor with parameters
+public abstract class Product
+{
+    private int quantity;
+    private double price;
+
+    public string Category { get; set; }
+    public string Name { get; set; }
+    public int Quantity { 
+        get { return quantity; }
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Quantity cannot be negative");
+            }
+            if (value > 1000)
+            {
+                throw new ArgumentException("Quantity cannot be more than 1000");
+            }
+            quantity = value;
+        }
+    }
+    public double Price
+    {
+        get { return price; }
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Price cannot be negative");
+            }
+            if (value > 100)
+            {
+                throw new ArgumentException("Price cannot be more than 100");
+            }
+            price = value;
+        }
+    }
+    
+    public Product(string category, string name, int quantity, double price)
+    {
+        Category = category;
+        Name = name;
+        Quantity = quantity;
+        Price = price;
+    }
+    // add method "GetCalories" that returns the calories of the product
+    public abstract double GetCalories();
+}
+
+// create class Salad that inherits class Product
+public class Salad : Product
+{
+    public Salad(string name, int quantity, double price) : base("салата", name, quantity, price)
+    {
+    }
+    // override method "GetCalories" that returns the calories of the product
+    public override double GetCalories()
+    {
+        return 0;
+    }
+
+}
+
+// create class Soup that inherits class Product
+public class Soup : Product
+{
+    public Soup(string name, int quantity, double price) : base("супа", name, quantity, price)
+    {
+    }
+    // override method "GetCalories" that returns the calories of the product
+    public override double GetCalories()
+    {
+        return 0;
+    }
+}
+
+// create class MainCourse that inherits class Product
+public class MainCourse : Product
+{
+    public MainCourse(string name, int quantity, double price) : base("основно", name, quantity, price)
+    {
+    }
+    // override method "GetCalories" that returns the calories of the product
+    public override double GetCalories()
+    {
+        // return the quantity of the product multiplied by 1
+        return Quantity * 1;
+    }
+}
+
+// create class Dessert that inherits class Product
+public class Dessert : Product
+{
+    public Dessert(string name, int quantity, double price) : base("десерт", name, quantity, price)
+    {
+    }
+    // override method "GetCalories" that returns the calories of the product
+    public override double GetCalories()
+    {
+        return Quantity * 3;
+    }
+}
+
+// create class Drink that inherits class Product
+public class Drink : Product
+{
+    public Drink(string name, int quantity, double price) : base("напитка", name, quantity, price)
+    {
+    }
+    // override method "GetCalories" that returns the calories of the product
+    public override double GetCalories()
+    {
+        return Quantity * 1.5;
+    }
+}
+
+// create class Order with properties "Table Number", "Products", "TotalPrice", "TotalCalories",
+// setters and getters, and constructor with parameters
+public class Order
+{
+    public int TableNumber {
+        set
+        {
+            if (value < 1)
+            {
+                throw new ArgumentException("Table number cannot be less than 1");
+            }
+            if (value > 30)
+            {
+                throw new ArgumentException("Table number cannot be more than 30");
+            }
+        }
+    }
+    public ImmutableList<Product> Products { get; set; }
+    public double TotalPrice { get; set; }
+    public double TotalCalories { get; set; }
+
+    public Order(int tableNumber, ImmutableList<Product> products)
+    {
+        TableNumber = tableNumber;
+        Products = products;
+        TotalPrice = 0;
+        TotalCalories = 0;
+    }
+    // add method "CalculateTotalPrice" that calculates the total price of the order
+    public void CalculateTotalPrice()
+    {
+        foreach (var product in Products)
+        {
+            TotalPrice += product.Price;
+        }
+    }
+    // add method "CalculateTotalCalories" that calculates the total calories of the order
+    public void CalculateTotalCalories()
+    {
+        foreach (var product in Products)
+        {
+            TotalCalories += product.GetCalories();
+        }
+    }
+}
+
+partial class Program
+{
+    static void Main()
+    {
+        // create an empty list of products
+        List<Product> products = new List<Product>();
+        
+        // read user input while it is not "изход"
+        while (true) {
+            var input = Console.ReadLine();
+
+            if (input == "изход") {
+                break;
+            }
+
+            if (input == null) {
+                continue;
+            }
+
+            var inputList = input.Split(", ");
+
+            // if input starts with category
+            if (Enum.TryParse<Category>(inputList[0], out Category category))
+            {
+                if (inputList.Length != 4)
+                {
+                    Console.WriteLine("Невалиден продукт");
+                    continue;
+                }
+                else if (category == Category.салата)
+                {
+                    products.Add(new Salad(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                }
+                else if (category == Category.супа)
+                {
+                    products.Add(new Soup(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                }
+                else if (category == Category.основно)
+                {
+                    products.Add(new MainCourse(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                }
+                else if (category == Category.десерт)
+                {
+                    products.Add(new Dessert(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                }
+                else if (category == Category.напитка)
+                {
+                    products.Add(new Drink(inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3])));
+                }
+            }
+            
+            if (input == "продажби") {
+                continue;
+            }
+
+
+            if (inputList.Length < 2)
+            {
+                Console.WriteLine("Invalid input!");
+                continue;
+            }
+            
+
+
+            // split the input by comma and eventual space after the comma
+            
+            // check if the input is valid
+            // if (inputList.Length < 2)
+            // {
+            //     Console.WriteLine("Invalid input!");
+            //     continue;
+            // }
+
+        }
+        
+
+
+
+        // foreach (var category in Enum.GetValues(typeof(Category)))
+        // {
+        //     Console.WriteLine(category);
+        // }        
+        // Console.WriteLine(Enum.TryParse<Category>("салата", out Category result));
+    }
+}
+
