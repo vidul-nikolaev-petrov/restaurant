@@ -248,7 +248,6 @@ partial class Program
             var input = Console.ReadLine();
 
             if (input == "изход") {
-                // check if orders are made
                 if (orders.Count > 0)
                 {
                     showSales(orders);
@@ -413,7 +412,7 @@ partial class Program
         }
     }
 
-    static void SlowWriteLine(string text, int delayPerCharacter)
+    public static void SlowWriteLine(string text, int delayPerCharacter)
     {
         foreach (char c in text)
         {
@@ -451,6 +450,7 @@ partial class Program
 инфо Таратор
 инфо Винен кебап
 инфо Палачинка
+инфо Кафе
 
 :P
 
