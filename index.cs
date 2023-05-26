@@ -223,7 +223,6 @@ namespace Restourant {
         {
             List<Product> products = new List<Product>();
             List<Order> orders = new List<Order>();            
-            Action<object> WriteLine = Console.WriteLine;
 
             WriteLine("\nЗдравейте! Моля въведете продукти в менюто:\n");
 
@@ -269,7 +268,6 @@ namespace Restourant {
 
                             products.Add(Menu.Category[inputList[0]](newProduct));
                         }
-                        WriteLine($"Продуктът '{inputList[1]}' беше добавен успешно в категорията '{inputList[0]}'!");
                         continue;
                     }
                     catch (ArgumentException ex)
@@ -349,16 +347,16 @@ namespace Restourant {
                         continue;
                     }
 
-                    SlowWriteLine($"Информация за продукт: {product.Name}", 5);
-                    SlowWriteLine($"{product.QuantityType}: {product.Quantity}", 5);
-                    SlowWriteLine($"Калории: {product.GetCalories()}", 5);
+                    WriteLine($"Информация за продукт: {product.Name}");
+                    WriteLine($"{product.QuantityType}: {product.Quantity}");
+                    WriteLine($"Калории: {product.GetCalories()}");
                     continue;
                 }
 
                 // easteregg
                 if (input == ":p" || input == ":P")
                 {
-                    SlowWriteLine("\nI like С#\n", 100);
+                    SlowWriteLine("\nI like С#", 50);
                     continue;
                 }
 
@@ -378,12 +376,12 @@ namespace Restourant {
                 .OrderBy(x => x.Key)
                 .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
 
-            SlowWriteLine($"Общо заети маси през деня: {busyTables}", 5);
-            SlowWriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}", 5);
-            SlowWriteLine("Продукти по категории:", 5);
+            WriteLine($"Общо заети маси през деня: {busyTables}");
+            WriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}");
+            WriteLine("Продукти по категории:");
             foreach (var product in totalProductsByCategory)
             {
-                SlowWriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}", 5);
+                WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}");
             }
         }
 
@@ -394,9 +392,18 @@ namespace Restourant {
                 Console.Write(c);
                 Thread.Sleep(delayPerCharacter);
             }
-            
-            Console.WriteLine();
-        }
+            Thread.Sleep(1000);
+            for (int i = text.Length - 1; i >= 0; i--)
+            {
+                Console.Write("\b \b");
+                Thread.Sleep(delayPerCharacter);
+            }
+        }  
+
+        public static void WriteLine(string text)
+        {
+            Console.WriteLine(text);
+        } 
     }
 }
 
