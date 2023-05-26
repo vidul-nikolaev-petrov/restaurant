@@ -9,5 +9,5 @@ dotnet build
 
 Usage:
 ```
-run the executable file in the `bin` directory
+dotnet run
 ```
