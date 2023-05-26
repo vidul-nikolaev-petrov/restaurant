@@ -272,7 +272,8 @@ public class Program
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine("ArgumentException occurred: " + ex.Message);
+                    Console.WriteLine("Грешка в аргументите: " + ex.Message);
+                    continue;
                 }
             }
 
@@ -321,7 +322,8 @@ public class Program
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine("ArgumentException occurred: " + ex.Message);
+                    Console.WriteLine("Грешка в аргументите: " + ex.Message);
+                    continue;
                 }
             }
 
