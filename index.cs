@@ -222,7 +222,7 @@ namespace Restourant {
         static void Main()
         {
             List<Product> products = new List<Product>();
-            List<Order> orders = new List<Order>();            
+            List<Order> orders = new List<Order>();       
 
             WriteLine("\nЗдравейте! Моля въведете продукти в менюто:\n");
 
@@ -349,14 +349,14 @@ namespace Restourant {
 
                     WriteLine($"Информация за продукт: {product.Name}");
                     WriteLine($"{product.QuantityType}: {product.Quantity}");
-                    WriteLine($"Калории: {product.GetCalories()}");
+                    WriteLine($"Калории: {product.GetCalories()}\n");
                     continue;
                 }
 
                 // easteregg
-                if (input == ":p" || input == ":P")
+                if (input.StartsWith(":p") || input.StartsWith(":P"))
                 {
-                    SlowWriteLine("\nI like С#", 50);
+                    SlowWriteLine($"I like С# {input}", 32);
                     continue;
                 }
 
@@ -383,6 +383,7 @@ namespace Restourant {
             {
                 WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}");
             }
+            WriteLine("");
         }
 
         public static void SlowWriteLine(string text, int delayPerCharacter)
@@ -403,7 +404,8 @@ namespace Restourant {
         public static void WriteLine(string text)
         {
             Console.WriteLine(text);
-        } 
+        }
+
     }
 }
 
