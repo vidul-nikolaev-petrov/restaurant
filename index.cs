@@ -206,7 +206,7 @@ public class Order
             tableNumber = value;
         }
     }
-    public ImmutableList<Product> Products { get; set; }
+    public ImmutableList<Product> Products { get; }
     public double TotalPrice { get; set; }
     public double TotalCalories { get; set; }
 
