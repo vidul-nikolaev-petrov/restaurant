@@ -375,7 +375,6 @@ public class Program
         var busyTables = orders.Select(x => x.TableNumber).Distinct().Count();
         var totalOrders = orders.Count();
         var totalIncome = orders.Sum(x => x.TotalPrice);
-        var totalProducts = orders.SelectMany(x => x.Products).Count();
         var totalProductsByCategory = orders.SelectMany(x => x.Products)
             .GroupBy(x => x.Category)
             .OrderBy(x => x.Key)
