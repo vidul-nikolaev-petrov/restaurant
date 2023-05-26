@@ -235,7 +235,7 @@ public class Order
     }
 }
 
-partial class Program
+public class Program
 {
     static void Main()
     {
@@ -345,7 +345,7 @@ partial class Program
             }
 
             // if input starts with "продажби" show sum of busy tables, sum of all orders and total income, 
-            // the sum of all orders' products and the sum of their prices grouped by category ascending
+            // the sum of all orders' products and the sum of their prices grouped by category ascendingly
             if (input == "продажби")
             {
                 showSales(orders);
