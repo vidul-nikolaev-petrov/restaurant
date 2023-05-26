@@ -26,8 +26,6 @@ public class Menu
     };
 }
 
-// define abstract class Product with properties "Category", "Name", "Quantity", "Price",
-// setters and getters, and constructor with parameters
 public abstract class Product
 {
     private int quantity;
@@ -88,9 +86,7 @@ public abstract class Product
         Quantity = quantity;
         Price = price;
     }
-    // add method "GetCalories" that returns the calories of the product
     public abstract double GetCalories();
-    // add method "QuantytyType" that returns the quantity type of the product
     public abstract string QuantityType { get; }
 }
 
@@ -100,12 +96,10 @@ public class Salad : Product
     public Salad(string name, int quantity, double price) : base("салата", name, quantity, price)
     {
     }
-    // override method "GetCalories" that returns the calories of the product
     public override double GetCalories()
     {
         return 0;
     }
-    // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
         get { return "Грама"; }
@@ -119,12 +113,10 @@ public class Soup : Product
     public Soup(string name, int quantity, double price) : base("супа", name, quantity, price)
     {
     }
-    // override method "GetCalories" that returns the calories of the product
     public override double GetCalories()
     {
         return 0;
     }
-    // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
         get { return "Грама"; }
@@ -137,13 +129,10 @@ public class MainCourse : Product
     public MainCourse(string name, int quantity, double price) : base("основно", name, quantity, price)
     {
     }
-    // override method "GetCalories" that returns the calories of the product
     public override double GetCalories()
     {
-        // return the quantity of the product multiplied by 1
         return Quantity * 1;
     }
-    // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
         get { return "Грама"; }
@@ -156,12 +145,10 @@ public class Dessert : Product
     public Dessert(string name, int quantity, double price) : base("десерт", name, quantity, price)
     {
     }
-    // override method "GetCalories" that returns the calories of the product
     public override double GetCalories()
     {
         return Quantity * 3;
     }
-    // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
         get { return "Грама"; }
@@ -174,20 +161,16 @@ public class Drink : Product
     public Drink(string name, int quantity, double price) : base("напитка", name, quantity, price)
     {
     }
-    // override method "GetCalories" that returns the calories of the product
     public override double GetCalories()
     {
         return Quantity * 1.5;
     }
-    // override property "QuantityType" that returns the quantity type of the product
     public override string QuantityType
     {
         get { return "Милилитра"; }
     }
 }
 
-// create class Order with properties "Table Number", "Products", "TotalPrice", "TotalCalories",
-// setters and getters, and constructor with parameters
 public class Order
 {
     private int tableNumber;
@@ -217,7 +200,6 @@ public class Order
         TotalPrice = 0;
         TotalCalories = 0;
     }
-    // add method "CalculateTotalPrice" that calculates the total price of the order
     public void CalculateTotalPrice()
     {
         foreach (var product in Products)
@@ -225,7 +207,6 @@ public class Order
             TotalPrice += product.Price;
         }
     }
-    // add method "CalculateTotalCalories" that calculates the total calories of the order
     public void CalculateTotalCalories()
     {
         foreach (var product in Products)
@@ -265,7 +246,7 @@ public class Program
 
             var inputList = Regex.Split(input, @",\s*");
 
-            // if input starts with category
+            // addition of products to the menu
             if (Menu.Category.ContainsKey(inputList[0]))
             {
                 try {
@@ -295,7 +276,7 @@ public class Program
                 }
             }
 
-            // input first element is digit in range 1-30
+            // orders
             if (int.TryParse(inputList[0], out int tableNumber))
             {
                 try {
@@ -344,16 +325,13 @@ public class Program
                 }
             }
 
-            // if input starts with "продажби" show sum of busy tables, sum of all orders and total income, 
-            // the sum of all orders' products and the sum of their prices grouped by category ascendingly
+            // sales
             if (input == "продажби")
             {
                 showSales(orders);
                 continue;
             }
             
-
-            // if input starts with "info" show the product which follows it
             if (input.StartsWith("инфо"))
             {
                 var inputInfo = input.Split(" ")
