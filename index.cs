@@ -228,6 +228,7 @@ namespace Restourant {
 
             while (true) {
                 var input = Console.ReadLine();
+                var inputList = Regex.Split(input, @",\s*");
 
                 if (input == "изход") {
                     if (orders.Count > 0)
@@ -244,8 +245,6 @@ namespace Restourant {
                 if (input == null) {
                     continue;
                 }
-
-                var inputList = Regex.Split(input, @",\s*");
 
                 // addition of products to the menu
                 if (Menu.Category.ContainsKey(inputList[0]))
@@ -324,7 +323,14 @@ namespace Restourant {
                 // sales
                 if (input == "продажби")
                 {
-                    showSales(orders);
+                    if (orders.Count > 0)
+                    {
+                        showSales(orders);
+                    }
+                    else
+                    {
+                        WriteLine("\nЗасега няма направени поръчки.");
+                    }
                     continue;
                 }
                 
@@ -399,6 +405,7 @@ namespace Restourant {
                 Console.Write("\b \b");
                 Thread.Sleep(delayPerCharacter);
             }
+            WriteLine("Невалидна команда!");
         }  
 
         public static void WriteLine(string text)
