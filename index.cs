@@ -369,7 +369,7 @@ namespace Restourant {
         public static void showSales(List<Order> orders) 
         {
             var busyTables = orders.Select(x => x.TableNumber).Distinct().Count();
-            var totalOrders = orders.Count();
+            var totalOrders = orders.Sum(x => x.Products.Count);
             var totalIncome = orders.Sum(x => x.TotalPrice);
             var totalProductsByCategory = orders.SelectMany(x => x.Products)
                 .GroupBy(x => x.Category)
