@@ -305,19 +305,11 @@ namespace Restourant {
                                 }
                             }
 
-                            if (productsInOrder.Count == 0)
-                            {
-                                WriteLine($"Няма продукт с име '{inputList[1]}'!");
-                                continue;
-                            }
-                            else
-                            {
-                                Order order = new Order(tableNumber, productsInOrder.ToImmutableList());
-                                order.CalculateTotalPrice();
-                                order.CalculateTotalCalories();
-                                orders.Add(order);
-                                continue;
-                            }
+                            Order order = new Order(tableNumber, productsInOrder.ToImmutableList());
+                            order.CalculateTotalPrice();
+                            order.CalculateTotalCalories();
+                            orders.Add(order);
+                            continue;
                         }
                     }
                     catch (ArgumentException ex)
