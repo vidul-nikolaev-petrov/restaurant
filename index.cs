@@ -222,7 +222,7 @@ namespace Restourant {
         static void Main()
         {
             List<Product> products = new List<Product>();
-            List<Order> orders = new List<Order>();       
+            List<Order> orders = new List<Order>();
 
             WriteLine("\nЗдравейте! Моля въведете продукти в менюто:\n");
 
@@ -288,6 +288,12 @@ namespace Restourant {
                         else
                         {
                             List<Product> productsInOrder = new List<Product>();
+
+                            if (!inputList.Skip(1).All(i => products.Any(p => p.Name == i))) {
+                                WriteLine("Един или повече невалидни продуктa!");
+                                continue;
+                            }
+
                             foreach (var product in products)
                             {
                                 for (int i = 1; i < inputList.Length; i++)
@@ -298,6 +304,7 @@ namespace Restourant {
                                     }
                                 }
                             }
+
                             if (productsInOrder.Count == 0)
                             {
                                 WriteLine($"Няма продукт с име '{inputList[1]}'!");
@@ -385,9 +392,9 @@ namespace Restourant {
             WriteLine($"Общо заети маси през деня: {busyTables}");
             WriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}");
             WriteLine("Продукти по категории:");
-            foreach (var product in totalProductsByCategory)
+            foreach (var p in totalProductsByCategory)
             {
-                WriteLine($"  -   {Menu.CatAnnotation[product.Category]}: {product.Count} - {Math.Round(product.Price, 2)}");
+                WriteLine($"  -   {Menu.CatAnnotation[p.Category]}: {p.Count} - {Math.Round(p.Price, 2)}");
             }
             WriteLine("");
         }
