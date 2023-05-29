@@ -359,13 +359,13 @@ namespace Restourant {
                     continue;
                 }
 
-                // show all products
-                if (input == "продукти")
+                // всички продукти в менюто
+                if (input == "меню")
                 {
                     if (products.Count > 0)
                     {
                         WriteLine("\nПродукти в менюто:");
-                        foreach (var product in products.OrderBy(x => x.Category))
+                        foreach (var product in products.OrderBy(x => x.Category).ThenBy(x => x.Name))
                         {
                             WriteLine($"{Menu.CatAnnotation[product.Category]}: " +
                                       $"{product.Name}, {product.Quantity} " +
