@@ -341,7 +341,7 @@ namespace Restourant {
                         .ToArray();
                     
                     if (inputInfo.Length < 2) {
-                        WriteLine("Невалидна инфо команда!");
+                        WriteLine("Невалидна инфо команда: липсва продукт!");
                         continue;
                     }
 
@@ -356,6 +356,20 @@ namespace Restourant {
                     WriteLine($"Информация за продукт: {product.Name}");
                     WriteLine($"{product.QuantityType}: {product.Quantity}");
                     WriteLine($"Калории: {product.GetCalories()}\n");
+                    continue;
+                }
+
+                // всички категории
+                if (input == "категории")
+                {
+                    WriteLine("\nКатегории по индекс и описателно име:");                    
+                    foreach (var cat in Menu.Category.OrderBy(x => x.Key))
+                    {
+                        WriteLine($"  - {cat.Key}: {Menu.CatAnnotation[cat.Key]}");
+                    }
+
+                    
+                    WriteLine("");
                     continue;
                 }
 
@@ -440,7 +454,7 @@ namespace Restourant {
                 }
 
                 if (!string.IsNullOrEmpty(input)) {
-                    WriteLine("Невалидна команда!");
+                    WriteLine($"Невалидна команда: '{input}'");
                 }
             }
         }
