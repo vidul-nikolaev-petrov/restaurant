@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 
 namespace Restourant {
@@ -355,6 +356,79 @@ namespace Restourant {
                     WriteLine($"Информация за продукт: {product.Name}");
                     WriteLine($"{product.QuantityType}: {product.Quantity}");
                     WriteLine($"Калории: {product.GetCalories()}\n");
+                    continue;
+                }
+
+                // show all products
+                if (input == "продукти")
+                {
+                    if (products.Count > 0)
+                    {
+                        WriteLine("\nПродукти в менюто:");
+                        foreach (var product in products)
+                        {
+                            WriteLine($"{Menu.CatAnnotation[product.Category]}: " +
+                                      $"{product.Name}, {product.Quantity} " +
+                                      $"{product.QuantityType}, {product.Price} лв.");
+                        }
+                        WriteLine("");
+                    }
+                    else
+                    {
+                        WriteLine("\nНяма добавени продукти в менюто.\n");
+                    }
+                    continue;
+                }
+
+                // да се премахне преди предаване - неудачни тестове,
+                // въведени само за леснота на проверката
+                if (input == "тест")
+                {
+                    int tCount = products.Count;
+                    products.AddRange(new List<Product>
+                    {
+                        new Salad("Шопска салата", 350, 2.50),
+                        new Soup("Таратор", 300, 1.50),
+                        new MainCourse("Винен кебап", 450, 5.00),
+                        new Dessert("Палачинка", 150, 2.20),
+                        new Drink("Кафе", 70, 1.00)
+                    });
+
+                    Debug.Assert(products.Count == (tCount + 5), "Успешно добавени продукти!");
+
+                    orders.AddRange(new List<Order>
+                    {
+                        new Order(11, new List<Product>
+                        {
+                            products[1],
+                            products[2],
+                            products[3],
+                            products[4]
+                        }.ToImmutableList()),
+                        new Order(22, new List<Product>
+                        {
+                            products[0],
+                            products[3],
+                            products[4]
+                        }.ToImmutableList()),
+                        new Order(4, new List<Product>
+                        {
+                            products[0],
+                            products[1],
+                        }.ToImmutableList()),
+                        new Order(5, new List<Product>
+                        {
+                            products[0],
+                            products[1],
+                            products[2],
+                            products[3],
+                            products[4]
+                        }.ToImmutableList())
+                    });
+
+                    Debug.Assert(orders.Count == 4, "Успешно добавени поръчки!");
+
+                    showSales(orders);
                     continue;
                 }
 
