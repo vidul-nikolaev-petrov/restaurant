@@ -365,7 +365,7 @@ namespace Restourant {
                     if (products.Count > 0)
                     {
                         WriteLine("\nПродукти в менюто:");
-                        foreach (var product in products)
+                        foreach (var product in products.OrderBy(x => x.Category))
                         {
                             WriteLine($"{Menu.CatAnnotation[product.Category]}: " +
                                       $"{product.Name}, {product.Quantity} " +
