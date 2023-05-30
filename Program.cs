@@ -31,6 +31,15 @@ namespace Restourant
             { "десерт", "Десерт" },
             { "напитка", "Напитка" }
         };
+
+        public enum CategoryName
+        {
+            салата,
+            супа,
+            основно,
+            десерт,
+            напитка
+        }
     }
 
     public class Commands
@@ -125,7 +134,7 @@ namespace Restourant
     public class Salad : Product
     {
         public Salad(string name, int quantity, double price)
-            : base("салата", name, quantity, price) { }
+            : base(Menu.CategoryName.салата.ToString(), name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -142,7 +151,7 @@ namespace Restourant
     public class Soup : Product
     {
         public Soup(string name, int quantity, double price)
-            : base("супа", name, quantity, price) { }
+            : base(Menu.CategoryName.супа.ToString(), name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -159,7 +168,7 @@ namespace Restourant
     public class MainCourse : Product
     {
         public MainCourse(string name, int quantity, double price)
-            : base("основно", name, quantity, price) { }
+            : base(Menu.CategoryName.основно.ToString(), name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -176,7 +185,7 @@ namespace Restourant
     public class Dessert : Product
     {
         public Dessert(string name, int quantity, double price)
-            : base("десерт", name, quantity, price) { }
+            : base(Menu.CategoryName.десерт.ToString(), name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -193,7 +202,7 @@ namespace Restourant
     public class Drink : Product
     {
         public Drink(string name, int quantity, double price)
-            : base("напитка", name, quantity, price) { }
+            : base(Menu.CategoryName.напитка.ToString(), name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -428,7 +437,7 @@ namespace Restourant
                         )
                         {
                             WriteLine(
-                                $"{Menu.CatAnnotation[product.Category]}: "
+                                $"   {Menu.CatAnnotation[product.Category]}: "
                                     + $"{product.Name}, {product.Quantity} "
                                     + $"{product.QuantityType}, {product.Price} лв."
                             );
@@ -489,7 +498,7 @@ namespace Restourant
             foreach (var p in totalProductsByCategory)
             {
                 WriteLine(
-                    $"  -   {Menu.CatAnnotation[p.Category]}: {p.Count} - {Math.Round(p.Price, 2)}"
+                    $"  - {Menu.CatAnnotation[p.Category]}: {p.Count} - {Math.Round(p.Price, 2)}"
                 );
             }
             WriteLine("");
