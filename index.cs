@@ -28,6 +28,25 @@ namespace Restourant {
         };
     }
 
+    public class Commands
+    {
+        public static  IEnumerable<string> ShowCommands()
+        {
+            return new string[]
+            {
+                "\nКоманди:",
+                "  - Добавяне на продукт: <категория>, <име>, <количество>, <цена>",
+                "  - Поръчка: <номер на маса>, <продукт1>, <продукт2>, ..., <продуктN>",
+                "  - Информация за продажби: продажби",
+                "  - Информация за продукт: инфо <име на продукт>",
+                "  - Всички категории: категории",
+                "  - Всички продукти в менюто: меню",
+                "  - Изход от програмата: изход",
+                "  - Помощ: ?, помощ, команди",
+            };
+        }
+    }
+
     public abstract class Product
     {
         private int quantity;
@@ -394,55 +413,11 @@ namespace Restourant {
                     continue;
                 }
 
-                // да се премахне преди предаване - неудачни тестове,
-                // въведени само за леснота на проверката
-                if (input == "тест")
+                // show commands
+                if (input == "?" || input == "помощ" || input == "команди")
                 {
-                    int tCount = products.Count;
-                    products.AddRange(new List<Product>
-                    {
-                        new Salad("Шопска салата", 350, 2.50),
-                        new Soup("Таратор", 300, 1.50),
-                        new MainCourse("Винен кебап", 450, 5.00),
-                        new Dessert("Палачинка", 150, 2.20),
-                        new Drink("Кафе", 70, 1.00)
-                    });
-
-                    Debug.Assert(products.Count == (tCount + 5), "Успешно добавени продукти!");
-
-                    orders.AddRange(new List<Order>
-                    {
-                        new Order(11, new List<Product>
-                        {
-                            products[1],
-                            products[2],
-                            products[3],
-                            products[4]
-                        }.ToImmutableList()),
-                        new Order(22, new List<Product>
-                        {
-                            products[0],
-                            products[3],
-                            products[4]
-                        }.ToImmutableList()),
-                        new Order(4, new List<Product>
-                        {
-                            products[0],
-                            products[1],
-                        }.ToImmutableList()),
-                        new Order(5, new List<Product>
-                        {
-                            products[0],
-                            products[1],
-                            products[2],
-                            products[3],
-                            products[4]
-                        }.ToImmutableList())
-                    });
-
-                    Debug.Assert(orders.Count == 4, "Успешно добавени поръчки!");
-
-                    showSales(orders);
+                    WriteLine(string.Join("\n", Commands.ShowCommands()));
+                    WriteLine("");
                     continue;
                 }
 
@@ -453,7 +428,8 @@ namespace Restourant {
                     continue;
                 }
 
-                if (!string.IsNullOrEmpty(input)) {
+                if (!string.IsNullOrEmpty(input))
+                {
                     WriteLine($"Невалидна команда: '{input}'");
                 }
             }
@@ -493,13 +469,12 @@ namespace Restourant {
                 Thread.Sleep(delayPerCharacter);
             }
             WriteLine("Невалидна команда!");
-        }  
+        }
 
         public static void WriteLine(string text)
         {
             Console.WriteLine(text);
         }
-
     }
 }
 
