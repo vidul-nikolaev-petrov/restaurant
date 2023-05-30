@@ -4,12 +4,14 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-
-namespace Restourant {
+namespace Restourant
+{
     public class Menu
     {
-        public static readonly Dictionary<string, Func<Tuple<string, int, double>, Product>> Category =
-            new Dictionary<string, Func<Tuple<string, int, double>, Product>>
+        public static readonly Dictionary<
+            string,
+            Func<Tuple<string, int, double>, Product>
+        > Category = new Dictionary<string, Func<Tuple<string, int, double>, Product>>
         {
             { "салата", args => new Salad(args.Item1, args.Item2, args.Item3) },
             { "супа", args => new Soup(args.Item1, args.Item2, args.Item3) },
@@ -18,7 +20,10 @@ namespace Restourant {
             { "напитка", args => new Drink(args.Item1, args.Item2, args.Item3) }
         };
 
-        public static readonly Dictionary<string, string> CatAnnotation = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> CatAnnotation = new Dictionary<
+            string,
+            string
+        >
         {
             { "салата", "Салата" },
             { "супа", "Супа" },
@@ -30,7 +35,7 @@ namespace Restourant {
 
     public class Commands
     {
-        public static  IEnumerable<string> ShowCommands()
+        public static IEnumerable<string> ShowCommands()
         {
             return new string[]
             {
@@ -53,8 +58,9 @@ namespace Restourant {
         private double price;
         private string name;
         public string Category { get; set; }
-        public string Name {
-            get { return name; }    
+        public string Name
+        {
+            get { return name; }
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -68,7 +74,8 @@ namespace Restourant {
                 name = value;
             }
         }
-        public int Quantity { 
+        public int Quantity
+        {
             get { return quantity; }
             set
             {
@@ -78,7 +85,9 @@ namespace Restourant {
                 }
                 if (value > 1000)
                 {
-                    throw new ArgumentException("Количеството не може да е повече от 1000 единици!");
+                    throw new ArgumentException(
+                        "Количеството не може да е повече от 1000 единици!"
+                    );
                 }
                 quantity = value;
             }
@@ -99,7 +108,7 @@ namespace Restourant {
                 price = value;
             }
         }
-        
+
         public Product(string category, string name, int quantity, double price)
         {
             Category = category;
@@ -107,6 +116,7 @@ namespace Restourant {
             Quantity = quantity;
             Price = price;
         }
+
         public abstract double GetCalories();
         public abstract string QuantityType { get; }
     }
@@ -114,30 +124,31 @@ namespace Restourant {
     // create class Salad that inherits class Product
     public class Salad : Product
     {
-        public Salad(string name, int quantity, double price) : base("салата", name, quantity, price)
-        {
-        }
+        public Salad(string name, int quantity, double price)
+            : base("салата", name, quantity, price) { }
+
         public override double GetCalories()
         {
             return 0;
         }
+
         public override string QuantityType
         {
             get { return "Грама"; }
         }
-
     }
 
     // create class Soup that inherits class Product
     public class Soup : Product
     {
-        public Soup(string name, int quantity, double price) : base("супа", name, quantity, price)
-        {
-        }
+        public Soup(string name, int quantity, double price)
+            : base("супа", name, quantity, price) { }
+
         public override double GetCalories()
         {
             return 0;
         }
+
         public override string QuantityType
         {
             get { return "Грама"; }
@@ -147,13 +158,14 @@ namespace Restourant {
     // create class MainCourse that inherits class Product
     public class MainCourse : Product
     {
-        public MainCourse(string name, int quantity, double price) : base("основно", name, quantity, price)
-        {
-        }
+        public MainCourse(string name, int quantity, double price)
+            : base("основно", name, quantity, price) { }
+
         public override double GetCalories()
         {
             return Quantity * 1;
         }
+
         public override string QuantityType
         {
             get { return "Грама"; }
@@ -163,13 +175,14 @@ namespace Restourant {
     // create class Dessert that inherits class Product
     public class Dessert : Product
     {
-        public Dessert(string name, int quantity, double price) : base("десерт", name, quantity, price)
-        {
-        }
+        public Dessert(string name, int quantity, double price)
+            : base("десерт", name, quantity, price) { }
+
         public override double GetCalories()
         {
             return Quantity * 3;
         }
+
         public override string QuantityType
         {
             get { return "Грама"; }
@@ -179,13 +192,14 @@ namespace Restourant {
     // create class Drink that inherits class Product
     public class Drink : Product
     {
-        public Drink(string name, int quantity, double price) : base("напитка", name, quantity, price)
-        {
-        }
+        public Drink(string name, int quantity, double price)
+            : base("напитка", name, quantity, price) { }
+
         public override double GetCalories()
         {
             return Quantity * 1.5;
         }
+
         public override string QuantityType
         {
             get { return "Милилитра"; }
@@ -195,7 +209,8 @@ namespace Restourant {
     public class Order
     {
         private int tableNumber;
-        public int TableNumber {
+        public int TableNumber
+        {
             get { return tableNumber; }
             set
             {
@@ -221,6 +236,7 @@ namespace Restourant {
             TotalPrice = 0;
             TotalCalories = 0;
         }
+
         public void CalculateTotalPrice()
         {
             foreach (var product in Products)
@@ -228,6 +244,7 @@ namespace Restourant {
                 TotalPrice += product.Price;
             }
         }
+
         public void CalculateTotalCalories()
         {
             foreach (var product in Products)
@@ -246,11 +263,13 @@ namespace Restourant {
 
             WriteLine("\nЗдравейте! Моля въведете продукти в менюто:\n");
 
-            while (true) {
+            while (true)
+            {
                 var input = Console.ReadLine();
                 var inputList = Regex.Split(input, @",\s*");
 
-                if (input == "изход") {
+                if (input == "изход")
+                {
                     if (orders.Count > 0)
                     {
                         showSales(orders);
@@ -262,14 +281,16 @@ namespace Restourant {
                     break;
                 }
 
-                if (input == null) {
+                if (input == null)
+                {
                     continue;
                 }
 
                 // addition of products to the menu
                 if (Menu.Category.ContainsKey(inputList[0]))
                 {
-                    try {
+                    try
+                    {
                         if (inputList.Length != 4)
                         {
                             WriteLine("Невалиден продукт!");
@@ -282,8 +303,11 @@ namespace Restourant {
                         }
                         else
                         {
-                            Tuple<string, int, double>  newProduct = new Tuple<string, int, double>
-                                (inputList[1], int.Parse(inputList[2]), double.Parse(inputList[3], CultureInfo.InvariantCulture));
+                            Tuple<string, int, double> newProduct = new Tuple<string, int, double>(
+                                inputList[1],
+                                int.Parse(inputList[2]),
+                                double.Parse(inputList[3], CultureInfo.InvariantCulture)
+                            );
 
                             products.Add(Menu.Category[inputList[0]](newProduct));
                         }
@@ -299,7 +323,8 @@ namespace Restourant {
                 // orders
                 if (int.TryParse(inputList[0], out int tableNumber))
                 {
-                    try {
+                    try
+                    {
                         if (inputList.Length < 2)
                         {
                             WriteLine("Невалидна команда!");
@@ -309,7 +334,8 @@ namespace Restourant {
                         {
                             List<Product> productsInOrder = new List<Product>();
 
-                            if (!inputList.Skip(1).All(i => products.Any(p => p.Name == i))) {
+                            if (!inputList.Skip(1).All(i => products.Any(p => p.Name == i)))
+                            {
                                 WriteLine("Един или повече невалидни продуктa!");
                                 continue;
                             }
@@ -352,14 +378,13 @@ namespace Restourant {
                     }
                     continue;
                 }
-                
+
                 if (input.StartsWith("инфо"))
                 {
-                    var inputInfo = input.Split(" ")
-                        .Where(x => !string.IsNullOrEmpty(x))
-                        .ToArray();
-                    
-                    if (inputInfo.Length < 2) {
+                    var inputInfo = input.Split(" ").Where(x => !string.IsNullOrEmpty(x)).ToArray();
+
+                    if (inputInfo.Length < 2)
+                    {
                         WriteLine("Невалидна инфо команда: липсва продукт!");
                         continue;
                     }
@@ -367,7 +392,8 @@ namespace Restourant {
                     var productName = string.Join(" ", inputInfo.Skip(1));
                     var product = products.FirstOrDefault(x => x.Name == productName);
 
-                    if (product == null) {
+                    if (product == null)
+                    {
                         WriteLine($"Няма продукт с име '{productName}'!");
                         continue;
                     }
@@ -381,13 +407,12 @@ namespace Restourant {
                 // всички категории
                 if (input == "категории")
                 {
-                    WriteLine("\nКатегории по индекс и описателно име:");                    
+                    WriteLine("\nКатегории по индекс и описателно име:");
                     foreach (var cat in Menu.Category.OrderBy(x => x.Key))
                     {
                         WriteLine($"  - {cat.Key}: {Menu.CatAnnotation[cat.Key]}");
                     }
 
-                    
                     WriteLine("");
                     continue;
                 }
@@ -398,11 +423,15 @@ namespace Restourant {
                     if (products.Count > 0)
                     {
                         WriteLine("\nПродукти в менюто:");
-                        foreach (var product in products.OrderBy(x => x.Category).ThenBy(x => x.Name))
+                        foreach (
+                            var product in products.OrderBy(x => x.Category).ThenBy(x => x.Name)
+                        )
                         {
-                            WriteLine($"{Menu.CatAnnotation[product.Category]}: " +
-                                      $"{product.Name}, {product.Quantity} " +
-                                      $"{product.QuantityType}, {product.Price} лв.");
+                            WriteLine(
+                                $"{Menu.CatAnnotation[product.Category]}: "
+                                    + $"{product.Name}, {product.Quantity} "
+                                    + $"{product.QuantityType}, {product.Price} лв."
+                            );
                         }
                         WriteLine("");
                     }
@@ -435,22 +464,33 @@ namespace Restourant {
             }
         }
 
-        public static void showSales(List<Order> orders) 
+        public static void showSales(List<Order> orders)
         {
             var busyTables = orders.Select(x => x.TableNumber).Distinct().Count();
             var totalOrders = orders.Sum(x => x.Products.Count);
             var totalIncome = orders.Sum(x => x.TotalPrice);
-            var totalProductsByCategory = orders.SelectMany(x => x.Products)
+            var totalProductsByCategory = orders
+                .SelectMany(x => x.Products)
                 .GroupBy(x => x.Category)
                 .OrderBy(x => x.Key)
-                .Select(x => new { Category = x.Key, Count = x.Count(), Price = x.Sum(y => y.Price) });
+                .Select(
+                    x =>
+                        new
+                        {
+                            Category = x.Key,
+                            Count = x.Count(),
+                            Price = x.Sum(y => y.Price)
+                        }
+                );
 
             WriteLine($"Общо заети маси през деня: {busyTables}");
             WriteLine($"Общо продажби: {totalOrders} - {Math.Round(totalIncome, 2)}");
             WriteLine("Продукти по категории:");
             foreach (var p in totalProductsByCategory)
             {
-                WriteLine($"  -   {Menu.CatAnnotation[p.Category]}: {p.Count} - {Math.Round(p.Price, 2)}");
+                WriteLine(
+                    $"  -   {Menu.CatAnnotation[p.Category]}: {p.Count} - {Math.Round(p.Price, 2)}"
+                );
             }
             WriteLine("");
         }
@@ -478,7 +518,7 @@ namespace Restourant {
     }
 }
 
-/* 
+/*
 
 Някои примерни команди:
 
