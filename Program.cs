@@ -8,16 +8,25 @@ namespace Restourant
 {
     public class Menu
     {
+        public static readonly Dictionary<int, string> CategoryName = new Dictionary<int, string>
+        {
+            { 1, "салата" },
+            { 2, "супа" },
+            { 3, "основно" },
+            { 4, "десерт" },
+            { 5, "напитка" }
+        };
+
         public static readonly Dictionary<
             string,
             Func<Tuple<string, int, double>, Product>
         > Category = new Dictionary<string, Func<Tuple<string, int, double>, Product>>
         {
-            { "салата", args => new Salad(args.Item1, args.Item2, args.Item3) },
-            { "супа", args => new Soup(args.Item1, args.Item2, args.Item3) },
-            { "основно", args => new MainCourse(args.Item1, args.Item2, args.Item3) },
-            { "десерт", args => new Dessert(args.Item1, args.Item2, args.Item3) },
-            { "напитка", args => new Drink(args.Item1, args.Item2, args.Item3) }
+            { Menu.CategoryName[1], args => new Salad(args.Item1, args.Item2, args.Item3) },
+            { Menu.CategoryName[2], args => new Soup(args.Item1, args.Item2, args.Item3) },
+            { Menu.CategoryName[3], args => new MainCourse(args.Item1, args.Item2, args.Item3) },
+            { Menu.CategoryName[4], args => new Dessert(args.Item1, args.Item2, args.Item3) },
+            { Menu.CategoryName[5], args => new Drink(args.Item1, args.Item2, args.Item3) }
         };
 
         public static readonly Dictionary<string, string> CatAnnotation = new Dictionary<
@@ -25,21 +34,12 @@ namespace Restourant
             string
         >
         {
-            { "салата", "Салата" },
-            { "супа", "Супа" },
-            { "основно", "Основно ястие" },
-            { "десерт", "Десерт" },
-            { "напитка", "Напитка" }
+            { Menu.CategoryName[1], "Салата" },
+            { Menu.CategoryName[2], "Супа" },
+            { Menu.CategoryName[3], "Основно ястие" },
+            { Menu.CategoryName[4], "Десерт" },
+            { Menu.CategoryName[5], "Напитка" }
         };
-
-        public enum CategoryName
-        {
-            салата,
-            супа,
-            основно,
-            десерт,
-            напитка
-        }
     }
 
     public class Commands
@@ -134,7 +134,7 @@ namespace Restourant
     public class Salad : Product
     {
         public Salad(string name, int quantity, double price)
-            : base(Menu.CategoryName.салата.ToString(), name, quantity, price) { }
+            : base(Menu.CategoryName[1], name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -151,7 +151,7 @@ namespace Restourant
     public class Soup : Product
     {
         public Soup(string name, int quantity, double price)
-            : base(Menu.CategoryName.супа.ToString(), name, quantity, price) { }
+            : base(Menu.CategoryName[2], name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -168,7 +168,7 @@ namespace Restourant
     public class MainCourse : Product
     {
         public MainCourse(string name, int quantity, double price)
-            : base(Menu.CategoryName.основно.ToString(), name, quantity, price) { }
+            : base(Menu.CategoryName[3], name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -185,7 +185,7 @@ namespace Restourant
     public class Dessert : Product
     {
         public Dessert(string name, int quantity, double price)
-            : base(Menu.CategoryName.десерт.ToString(), name, quantity, price) { }
+            : base(Menu.CategoryName[4], name, quantity, price) { }
 
         public override double GetCalories()
         {
@@ -202,7 +202,7 @@ namespace Restourant
     public class Drink : Product
     {
         public Drink(string name, int quantity, double price)
-            : base(Menu.CategoryName.напитка.ToString(), name, quantity, price) { }
+            : base(Menu.CategoryName[5], name, quantity, price) { }
 
         public override double GetCalories()
         {
