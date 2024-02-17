@@ -1,4 +1,4 @@
-# restourant
+# restaurant
 ### Course Work
 
 
